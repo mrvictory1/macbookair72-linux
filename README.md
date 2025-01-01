@@ -9,10 +9,11 @@ Tweaks and workarounds for Linux on MacBookAir7,2. Also known as MacBook Air (Ea
 
 Yes, Apple was selling a 5th gen Intel Core [until 2019](https://everymac.com/systems/apple/macbook-air/specs/macbook-air-core-i5-1.8-13-2017-specs.html). Since this is a rather old MacBook with an Intel processor I expected the Mac to work well with Linux, the reality is this Mac requires several tweaks which are mentioned in different websites to be fully functional.
 # Getting hardware to work
-* Broadcom 4360 requires the "wl" module to be functional. To download the module you may temporarily use mobile phone tethering, as this Mac lacks an Ethernet port. The relevant package is `broadcom-wl-dkms` on Arch Linux and `kmod-wl` on Fedora.
+* Broadcom 4360 requires the "wl" module to be functional. To download the module you may temporarily use mobile phone tethering, as this Mac lacks an Ethernet port. The relevant package is `broadcom-wl-dkms` on Arch Linux and `kmod-wl` on Fedora. You may need to blacklist any other driver for wl to take control.
 * The webcam requires [facetimehd](https://github.com/patjak/facetimehd).
+* Keyboard backlight doesn't work on Nobara Linux 40 but it did on winesapOS, I haven't investigated why.
 # Fixes and workarounds
-* **Random Wi-Fi disconections:** If you use 2.4 GHz, Wi-Fi may dropout at a random time and fail to reconnect until wl kernel module is unloaded and reloaded. To avoid this situation, either use 5 GHz or stay within proximity of a 2.4 GHz access point. To force 5 GHz on a network, type `nm-connection-editor` on a terminal, choose your network and in "Wireless" section set band to "A (5 GHz)". If you cannot use 5 GHz, when a disconnection occurs, run `sudo rmmod wl && sudo modprobe wl`.
+* **Random Wi-Fi disconections:** If you use 2.4 GHz, Wi-Fi may dropout at a random time and fail to reconnect until wl kernel module is unloaded and reloaded. To avoid this situation, either use 5 GHz or stay within proximity of a 2.4 GHz access point, connection drop is less likely to happen if signal is strong. 5 GHz can also drop if signal is weak, but it can recover automatically. To force 5 GHz on a network, type `nm-connection-editor` on a terminal, choose your network and in "Wireless" section set band to "A (5 GHz)". If you cannot use 5 GHz, when a disconnection occurs, run `sudo rmmod wl && sudo modprobe wl`.
 * **MacBook wakes up when lid is closed:** Disable lid wakeup with the following systemd unit:
 ```
 [Unit]
@@ -24,4 +25,6 @@ ExecStart=/bin/sh -c "echo XHC1 > /proc/acpi/wakeup && echo LID0 > /proc/acpi/wa
 WantedBy=multi-user.target
 ```
 Closing the lid to suspend the Mac will work if it is enabled on your system, for waking up you will need to press the power button.
-* **Hissing / screeching sound:**
+* **Hissing / screeching sound:** When playing back voice or a high pitch sound, you may hear sound distortions. To get rid of distortions, set an equalizer with EasyEffects. I am using 32 bands; bands 19, 20 and 21 (1.1 kHz, 1.4 kHz and 1.7 kHz respectively) have -12.56 db gain.
+* **Desktop environment / mouse freeze:** Use `intel_idle.max_cstate=1` kernel parameter. [Source](https://github.com/M4he/Linux/blob/master/Hardware/MacBookAir7%2C2.md#limiting-cstate)
+* **Worse battery life compared to macOS:** On Linux with %70-80 battery health, battery lasts 4 and a half hours with light usage. On idle with %15 screen brightness, keyboard backlight off, Wi-Fi enabled, power profile set to  "Power Save", energy usage is 8W as reported by powertop. On macOS Mojave under same conditions, battery usage is 3W. I don't have a solution for this at the moment.
