@@ -31,4 +31,6 @@ Closing the lid to suspend the Mac will work if it is enabled on your system, fo
   * Blacklist kernel module b43
   * Use kernel parameters `i915.enable_dc=4 i915.enable_psr=2 acpi_osi=!Darwin`.
   * Use powertop, turn on every power saving option in "Tunables" tab, turn off WakeUp for everything.
-acpi_osi=!Darwin reduces power usage by 1-1.2W, blacklisting b43 reduces by 1-2W, powertop tweaks reduce usage by 0.4-0.5W. i915 parameters are there to enable aggressive power saving, they may or may not have an effect. These modifications are not enough to bring Linux on par with macOS but help with bridging the gap.
+
+acpi_osi=!Darwin reduces power usage by 1-1.5W, blacklisting b43 reduces by 1-2W, powertop tweaks reduce usage by 0.4-0.5W. i915 parameters are there to enable aggressive power saving, they may or may not have an effect.
+These modifications are not enough to bring Linux battery life on par with macOS but help with bridging the gap.
