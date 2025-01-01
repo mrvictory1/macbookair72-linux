@@ -13,4 +13,15 @@ Yes, Apple was selling a 5th gen Intel Core [until 2019](https://everymac.com/sy
 * The webcam requires [facetimehd](https://github.com/patjak/facetimehd).
 # Fixes and workarounds
 * **Random Wi-Fi disconections:** If you use 2.4 GHz, Wi-Fi may dropout at a random time and fail to reconnect until wl kernel module is unloaded and reloaded. To avoid this situation, either use 5 GHz or stay within proximity of a 2.4 GHz access point. To force 5 GHz on a network, type `nm-connection-editor` on a terminal, choose your network and in "Wireless" section set band to "A (5 GHz)". If you cannot use 5 GHz, when a disconnection occurs, run `sudo rmmod wl && sudo modprobe wl`.
-* **MacBook wakes up when lid is closed:** 
+* **MacBook wakes up when lid is closed:** Disable lid wakeup with the following systemd unit:
+```
+[Unit]
+Description=MacBook suspend bug fix
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "echo XHC1 > /proc/acpi/wakeup && echo LID0 > /proc/acpi/wakeup"
+[Install]
+WantedBy=multi-user.target
+```
+Closing the lid to suspend the Mac will work if it is enabled on your system, for waking up you will need to press the power button.
+* **Hissing / screeching sound:**
