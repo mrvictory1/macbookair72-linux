@@ -31,6 +31,7 @@ Closing the lid to suspend the Mac will work if it is enabled on your system, fo
   * ~~Blacklist kernel module b43~~ UPDATE: This does nothing
   * Use kernel parameters `i915.enable_dc=4 i915.enable_psr=2 acpi_osi=!Darwin`.
   * ~~Use powertop, turn on every power saving option in "Tunables" tab, turn off WakeUp for everything. Alternatively enable powertop's systemd service.~~ UPDATE: Don't do this either, this decreases 5 GHz network stability and speed even though there are noticeable battery savings.
+  * Power off the MacBook after charging it and power it back on. This power save trick will not work with a reboot, the system must start from a cold boot after being charged.
 
-acpi_osi=!Darwin reduces power usage by 1-1.5W, ~~blacklisting b43 reduces by 1-2W~~, powertop tweaks reduce usage by 0.4-0.5W. i915 parameters are there to enable aggressive power saving, they may or may not have an effect.
+acpi_osi=!Darwin reduces power usage by 1-1.5W, ~~blacklisting b43 reduces by 1-2W~~, powertop tweaks reduce usage by 0.4-0.5W. i915 parameters are there to enable aggressive power saving, they may or may not have an effect. Power cycle trick saves 0.5-1W.
 These modifications are not enough to bring Linux battery life on par with macOS but help with bridging the gap. Most notably CPU package states C6 and above is not available, highest state is C3. 
